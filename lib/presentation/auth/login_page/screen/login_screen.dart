@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_akhir_pam_lanjut_115/core/core.dart';
 import 'package:project_akhir_pam_lanjut_115/data/model/request/auth/login_request_model.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/detail_hotel_page/screen/detail_hotel_screen.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/home_page_admin/screen/home_screen_admin.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/auth/login_page/bloc/login_bloc.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/auth/register_page/screen/register_screen.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/customer/home_page/screen/home_screen_customer.dart';
+import 'package:project_akhir_pam_lanjut_115/data/repository/admin_repository.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     emailController = TextEditingController();
     passwordController = TextEditingController();
-    _key = GlobalKey<FormState>();
+    _key = GlobalKey<FormState>(); // Inisiasi key
     super.initState();
   }
 
@@ -38,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.blueLight, // warna latar belakang yang soft
+      backgroundColor: AppColors.blueLight,
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
@@ -47,7 +51,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Logo atau Icon Aplikasi
                 Icon(Icons.hotel, size: 64, color: AppColors.primary),
                 const SpaceHeight(16),
                 Text(
@@ -60,8 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SpaceHeight(40),
-
-                // Card Form Login
+                // Form Card
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -71,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       BoxShadow(
                         color: Colors.black12,
                         blurRadius: 15,
-                        offset: Offset(0, 5),
+                        offset: const Offset(0, 5),
                       ),
                     ],
                   ),
@@ -112,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SpaceHeight(30),
                       BlocConsumer<LoginBloc, LoginState>(
-                        listener: (context, state) {
+                        listener: (context, state) async {
                           if (state is LoginFailure) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(state.error)),
@@ -121,20 +123,36 @@ class _LoginScreenState extends State<LoginScreen> {
                             final role =
                                 state.responseModel.user?.role?.toLowerCase();
                             if (role == 'admin') {
-                              // context.pushAndRemoveUntil(
-                              //   const AdminScreen(),
-                              //   (route) => false,
-                              // );
+                              final adminRepository =
+                                  context.read<AdminRepository>();
+                              final hasHotel =
+                                  await adminRepository.checkIfAdminHasHotel();
+                              if (hasHotel) {
+                                // ignore: use_build_context_synchronously
+                                context.pushAndRemoveUntil(
+                                  const HomeScreenAdmin(),
+                                  (route) => false,
+                                );
+                              } else {
+                                // ignore: use_build_context_synchronously
+                                context.pushAndRemoveUntil(
+                                  const DetailHotelScreen(),
+                                  (route) => false,
+                                );
+                              }
                             } else if (role == 'customer') {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text(state.responseModel.message!),
+                                  content: Text(
+                                    state.responseModel.message ??
+                                        'Berhasil masuk!',
+                                  ),
                                 ),
                               );
-                              // context.pushAndRemoveUntil(
-                              //   const CustomerScreen(),
-                              //   (route) => false,
-                              // );
+                              context.pushAndRemoveUntil(
+                                const HomeScreenCustomer(),
+                                (route) => false,
+                              );
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -168,9 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                 ),
-
                 const SpaceHeight(20),
-
                 // Navigasi ke Register
                 Text.rich(
                   TextSpan(
