@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_akhir_pam_lanjut_115/core/core.dart';
 import 'package:project_akhir_pam_lanjut_115/data/model/request/auth/login_request_model.dart';
-import 'package:project_akhir_pam_lanjut_115/presentation/admin/detail_hotel_page/screen/detail_hotel_screen.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/add_hotel_page/screen/add_hotel_screen.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/admin/home_page_admin/screen/home_screen_admin.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/auth/login_page/bloc/login_bloc.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/auth/register_page/screen/register_screen.dart';
@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               } else {
                                 // ignore: use_build_context_synchronously
                                 context.pushAndRemoveUntil(
-                                  const DetailHotelScreen(),
+                                  const AddHotelScreen(),
                                   (route) => false,
                                 );
                               }
