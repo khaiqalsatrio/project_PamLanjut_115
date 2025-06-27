@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class GetBookingByHotelResponseModel {
   final bool? status;
-  final List<Datum>? data;
+  final List<DataBookingAdmin>? data;
 
   GetBookingByHotelResponseModel({this.status, this.data});
 
@@ -17,7 +17,9 @@ class GetBookingByHotelResponseModel {
         data:
             json["data"] == null
                 ? []
-                : List<Datum>.from(json["data"]!.map((x) => Datum.fromMap(x))),
+                : List<DataBookingAdmin>.from(
+                  json["data"]!.map((x) => DataBookingAdmin.fromMap(x)),
+                ),
       );
 
   Map<String, dynamic> toMap() => {
@@ -26,7 +28,7 @@ class GetBookingByHotelResponseModel {
   };
 }
 
-class Datum {
+class DataBookingAdmin {
   final int? id;
   final DateTime? checkInDate;
   final DateTime? checkOutDate;
@@ -37,7 +39,7 @@ class Datum {
   final String? namaUser;
   final String? emailUser;
 
-  Datum({
+  DataBookingAdmin({
     this.id,
     this.checkInDate,
     this.checkOutDate,
@@ -49,27 +51,29 @@ class Datum {
     this.emailUser,
   });
 
-  factory Datum.fromJson(String str) => Datum.fromMap(json.decode(str));
+  factory DataBookingAdmin.fromJson(String str) =>
+      DataBookingAdmin.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory Datum.fromMap(Map<String, dynamic> json) => Datum(
-    id: json["id"],
-    checkInDate:
-        json["check_in_date"] == null
-            ? null
-            : DateTime.parse(json["check_in_date"]),
-    checkOutDate:
-        json["check_out_date"] == null
-            ? null
-            : DateTime.parse(json["check_out_date"]),
-    status: json["status"],
-    namaKamar: json["nama_kamar"],
-    namaHotel: json["nama_hotel"],
-    idUser: json["id_user"],
-    namaUser: json["nama_user"],
-    emailUser: json["email_user"],
-  );
+  factory DataBookingAdmin.fromMap(Map<String, dynamic> json) =>
+      DataBookingAdmin(
+        id: json["id"],
+        checkInDate:
+            json["check_in_date"] == null
+                ? null
+                : DateTime.parse(json["check_in_date"]),
+        checkOutDate:
+            json["check_out_date"] == null
+                ? null
+                : DateTime.parse(json["check_out_date"]),
+        status: json["status"],
+        namaKamar: json["nama_kamar"],
+        namaHotel: json["nama_hotel"],
+        idUser: json["id_user"],
+        namaUser: json["nama_user"],
+        emailUser: json["email_user"],
+      );
 
   Map<String, dynamic> toMap() => {
     "id": id,

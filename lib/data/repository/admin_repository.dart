@@ -105,7 +105,6 @@ class AdminRepository {
         {},
       );
       final jsonResponse = json.decode(response.body);
-
       if (jsonResponse['status'] == true) {
         final model = GetKamarResponseModel.fromMap(jsonResponse);
         return Right(model.data ?? []);
@@ -117,19 +116,17 @@ class AdminRepository {
     }
   }
 
-  Future<Either<String, List<GetBookingByHotelResponseModel>>>
-  getBookingByHotel(int idHotel) async {
+  Future<Either<String, List<DataBookingAdmin>>> getBookingByHotel() async {
     try {
       final response = await _client.postWithToken(
-        'user/admin/kamar_hotel/get_booking_by_hotel.php',
-        {'id_hotel': idHotel.toString()},
+        'user/admin/get_booking_by_hotel.php',
+        {},
       );
       final jsonResponse = json.decode(response.body);
-      final bookings =
-          (jsonResponse['data'] as List)
-              .map((json) => GetBookingByHotelResponseModel.fromJson(json))
-              .toList();
-      return Right(bookings);
+      final parsedResponse = GetBookingByHotelResponseModel.fromMap(
+        jsonResponse,
+      );
+      return Right(parsedResponse.data ?? []);
     } catch (e) {
       return Left('Failed to get booking: $e');
     }
@@ -141,14 +138,11 @@ class AdminRepository {
         'user/admin/hotel/get_hotel_by_user.php',
         {},
       );
-
       if (kDebugMode) {
         print('📄 status: ${response.statusCode}, body: ${response.body}');
       }
-
       if (response.statusCode == 200) {
         final model = GetHotelByUserResponseModel.fromJson(response.body);
-
         if (model.status == true) {
           return Right(model);
         } else {
@@ -162,6 +156,32 @@ class AdminRepository {
         print('❌ Exception saat getHotel: $e\n$stacktrace');
       }
       return Left('Failed to get hotel: $e');
+    }
+  }
+
+  Future<bool> checkIfAdminHasHotel() async {
+    try {
+      final response = await _client.getWithToken(
+        'user/admin/hotel/check_hotel.php',
+        {},
+      );
+      final data = json.decode(response.body);
+      if (kDebugMode) {
+        print("[checkIfAdminHasHotel] Status: ${response.statusCode}");
+        print(data);
+      }
+      if (response.statusCode == 200 && data['status'] == true) {
+        // Status true berarti hotel sudah ada
+        return true;
+      } else {
+        // Status false berarti belum ada hotel
+        return false;
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print("Error in checkIfAdminHasHotel: $e");
+      }
+      return false;
     }
   }
 }
