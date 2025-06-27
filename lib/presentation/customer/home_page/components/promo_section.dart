@@ -10,7 +10,6 @@ class PromoSection extends StatelessWidget {
       "Diskon 50% untuk pengguna baru",
       "Gratis Sarapan untuk semua booking",
     ];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

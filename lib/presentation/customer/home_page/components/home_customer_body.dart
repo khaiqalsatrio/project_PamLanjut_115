@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/customer/detail_kamar_page/screen/detail_kamar_screen.dart';
-import 'package:project_akhir_pam_lanjut_115/presentation/customer/get_all_hotel/bloc/hotel_list_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/customer/get_all_hotel/bloc/get_all_hotel_bloc.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/customer/home_page/components/ewallet_section.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/customer/home_page/components/promo_section.dart';
 
@@ -33,7 +33,7 @@ class HomeCustomerBody extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      "Harga terjangkau, lokasi strategis",
+                      "Rencanakan perjalanan hemat dengan, InapGo",
                       style: TextStyle(color: Colors.white70, fontSize: 14),
                     ),
                     const SizedBox(height: 10),
@@ -76,26 +76,25 @@ class HomeCustomerBody extends StatelessWidget {
               ],
             ),
           ),
-          BlocBuilder<HotelListBloc, HotelListState>(
+          BlocBuilder<GetAllHotelBloc, GetAllHotelState>(
             builder: (context, state) {
-              if (state is HotelListLoading) {
+              if (state is GetAllHotelLoading) {
                 return const Center(child: CircularProgressIndicator());
               }
-              if (state is HotelListFailure) {
+              if (state is GetAllHotelFailure) {
                 return Center(child: Text("❌ ${state.message}"));
               }
-              if (state is HotelListSuccess) {
+              if (state is GetAllHotelSuccess) {
                 final hotels = state.hotels;
                 if (hotels.isEmpty) {
                   return const Center(
                     child: Text("Tidak ada hotel ditemukan."),
                   );
                 }
-
                 return Column(
                   children: [
                     SizedBox(
-                      height: 270,
+                      height: 275,
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemCount: hotels.length,
@@ -108,20 +107,14 @@ class HomeCustomerBody extends StatelessWidget {
                           final hotel = hotels[index];
                           return SizedBox(
                             width: 200,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
+                            // height: 260,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black12,
-                                    blurRadius: 8,
-                                    offset: Offset(0, 4),
-                                  ),
-                                ],
                               ),
+                              elevation: 3,
                               child: InkWell(
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(10),
                                 onTap: () {
                                   if (hotel.id != null) {
                                     Navigator.push(
@@ -130,6 +123,8 @@ class HomeCustomerBody extends StatelessWidget {
                                         builder:
                                             (_) => DetailKamarScreen(
                                               idHotel: hotel.id!,
+                                              hotelName: hotel.namaHotel ?? '-',
+                                              alamat: hotel.alamat ?? '-',
                                             ),
                                       ),
                                     );
@@ -140,10 +135,10 @@ class HomeCustomerBody extends StatelessWidget {
                                   children: [
                                     ClipRRect(
                                       borderRadius: const BorderRadius.vertical(
-                                        top: Radius.circular(8),
+                                        top: Radius.circular(10),
                                       ),
                                       child: Container(
-                                        height: 130,
+                                        height: 125,
                                         width: double.infinity,
                                         decoration: BoxDecoration(
                                           color: Colors.grey[300],
@@ -156,56 +151,61 @@ class HomeCustomerBody extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            hotel.namaHotel ??
-                                                'Nama hotel tidak tersedia',
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black87,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            hotel.deskripsiHotel ??
-                                                'Deskripsi belum diisi',
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 13,
-                                              color: Colors.black54,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.location_on,
-                                                size: 14,
-                                                color: Colors.blue,
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              hotel.namaHotel ??
+                                                  'Nama hotel tidak tersedia',
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black87,
                                               ),
-                                              const SizedBox(width: 4),
-                                              Expanded(
-                                                child: Text(
-                                                  'Alamat tidak tersedia',
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black54,
-                                                  ),
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              hotel.deskripsiHotel ??
+                                                  'Deskripsi belum diisi',
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.black54,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.location_on,
+                                                  size: 14,
+                                                  color: Colors.blue,
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
+                                                const SizedBox(width: 4),
+                                                Expanded(
+                                                  child: Text(
+                                                    hotel.alamat ??
+                                                        'Alamat tidak tersedia',
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.black54,
+                                                    ),
+                                                    maxLines: 1,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -217,12 +217,9 @@ class HomeCustomerBody extends StatelessWidget {
                       ),
                     ),
                     // EWALLET SECTION
-                    EWalletSection(),
-
-                    const SizedBox(height: 5),
-
-                    // EWALLET SECTION
-                    PromoSection(),
+                    const EWalletSection(),
+                    // PROMO SECTION
+                    const PromoSection(),
                   ],
                 );
               }

@@ -12,7 +12,6 @@ class EWalletSection extends StatelessWidget {
       'assets/images/linkaja.jpg',
     ];
     final ewalletNames = ['DANA', 'ShopeePay', 'Gopay', 'LinkAja'];
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
