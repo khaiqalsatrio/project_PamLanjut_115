@@ -12,7 +12,7 @@ class ProfileHeader extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: 150,
+          height: 130,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -22,7 +22,6 @@ class ProfileHeader extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
           ),
         ),
         Positioned.fill(
