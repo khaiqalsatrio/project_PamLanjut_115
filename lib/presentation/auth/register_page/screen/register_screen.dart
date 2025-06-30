@@ -130,7 +130,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       BlocConsumer<RegisterBloc, RegisterState>(
                         listener: (context, state) {
                           if (state is RegisterSuccess) {
-                            // Tampilkan snackbar
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(state.message),
@@ -138,11 +137,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                             );
 
-                            // Tunggu sebentar lalu redirect ke login
                             Future.delayed(const Duration(seconds: 2), () {
-                              // ignore: use_build_context_synchronously
-                              context.pushAndRemoveUntil(
-                                const LoginScreen(),
+                              if (!mounted) return;
+                              Navigator.pushNamedAndRemoveUntil(
+                                // ignore: use_build_context_synchronously
+                                context,
+                                '/login',
                                 (route) => false,
                               );
                             });
