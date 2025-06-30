@@ -19,9 +19,17 @@ class AdminRepository {
   Future<Either<String, bool>> addHotel(AddHotelRequestModel request) async {
     try {
       final response = await _client.postWithToken(
-        'user/admin/hotel/add_hotel.php',
-        request.toJson(),
+        'admin/hotel',
+        request.toMap(), // ✅ gunakan toMap(), bukan toJson()
       );
+
+      if (kDebugMode) {
+        print('Response status: ${response.statusCode}');
+      }
+      if (kDebugMode) {
+        print('Response body: ${response.body}');
+      }
+
       final jsonResponse = json.decode(response.body);
       return Right(jsonResponse['status'] == true);
     } catch (e) {
@@ -32,7 +40,8 @@ class AdminRepository {
   Future<Either<String, bool>> addKamar(AddKamarRequestModel request) async {
     try {
       final response = await _client.postWithToken(
-        'user/admin/kamar_hotel/add_kamar.php',
+        // 'user/admin/kamar_hotel/add_kamar.php',
+        'admin/kamar-hotel',
         request.toJson(),
       );
       final jsonResponse = json.decode(response.body);
@@ -57,31 +66,32 @@ class AdminRepository {
     }
   }
 
+  // Update kamar with token
   Future<Either<String, bool>> updateKamar(
     UpdateKamarRequestModel request,
   ) async {
     try {
-      final response = await _client.postWithToken(
-        'user/admin/kamar_hotel/update_kamar.php',
-        request.toJson(),
+      final response = await _client.putWithToken(
+        'admin/kamar/${request.id}', // ✅ ID dimasukkan ke URL
+        request.toJson(), // ✅ Body data
       );
       final jsonResponse = json.decode(response.body);
       return Right(jsonResponse['status'] == true);
     } catch (e) {
-      return Left('Failed to update hotel: $e');
+      return Left('Failed to update kamar: $e');
     }
   }
 
+  // Delete kamar with token
   Future<Either<String, bool>> deleteKamar(int idKamar) async {
     try {
-      final response = await _client.postWithToken(
-        'user/admin/kamar_hotel/delete_kamar.php',
-        {'id': idKamar.toString()},
+      final response = await _client.deleteWithToken(
+        'admin/kamar/$idKamar', // ✅ ID dimasukkan ke URL
       );
       final jsonResponse = json.decode(response.body);
       return Right(jsonResponse['status'] == true);
     } catch (e) {
-      return Left('Failed to delete hotel: $e');
+      return Left('Failed to delete kamar: $e');
     }
   }
 
@@ -101,13 +111,14 @@ class AdminRepository {
   Future<Either<String, List<DataKamarAdmin>>> getKamar() async {
     try {
       final response = await _client.getWithToken(
-        'user/admin/kamar_hotel/get_kamar.php',
+        // 'user/admin/kamar_hotel/get_kamar.php',
+        'admin/kamar-hotel',
         {},
       );
       final jsonResponse = json.decode(response.body);
       if (jsonResponse['status'] == true) {
         final model = GetKamarResponseModel.fromMap(jsonResponse);
-        return Right(model.data ?? []);
+        return Right(model.data);
       } else {
         return Left(jsonResponse['message'] ?? 'Error: status false dari API');
       }
@@ -118,8 +129,9 @@ class AdminRepository {
 
   Future<Either<String, List<DataBookingAdmin>>> getBookingByHotel() async {
     try {
-      final response = await _client.postWithToken(
-        'user/admin/get_booking_by_hotel.php',
+      final response = await _client.getWithToken(
+        // 'user/admin/get_booking_by_hotel.php',
+        'admin/booking-by-hotel',
         {},
       );
       final jsonResponse = json.decode(response.body);
@@ -135,7 +147,8 @@ class AdminRepository {
   Future<Either<String, GetHotelByUserResponseModel>> getHotel() async {
     try {
       final response = await _client.getWithToken(
-        'user/admin/hotel/get_hotel_by_user.php',
+        // 'user/admin/hotel/get_hotel_by_user.php',
+        'admin/hotel',
         {},
       );
       if (kDebugMode) {
@@ -162,7 +175,8 @@ class AdminRepository {
   Future<bool> checkIfAdminHasHotel() async {
     try {
       final response = await _client.getWithToken(
-        'user/admin/hotel/check_hotel.php',
+        // 'user/admin/hotel/check_hotel.php',
+        'admin/hotel/check',
         {},
       );
       final data = json.decode(response.body);

@@ -33,8 +33,15 @@ class DataHotel {
   final String? namaHotel;
   final String? deskripsiHotel;
   final String? alamat;
+  final String? kota; // ⬅️ tambahkan ini
 
-  DataHotel({this.id, this.namaHotel, this.deskripsiHotel, this.alamat});
+  DataHotel({
+    this.id,
+    this.namaHotel,
+    this.deskripsiHotel,
+    this.alamat,
+    this.kota, // ⬅️ dan ini
+  });
 
   factory DataHotel.fromJson(String str) => DataHotel.fromMap(json.decode(str));
 
@@ -45,12 +52,14 @@ class DataHotel {
     namaHotel: json["nama_hotel"],
     deskripsiHotel: json["deskripsi_hotel"],
     alamat: json["alamat"],
+    kota: json["kota"], // ⬅️ ini penting
   );
 
   Map<String, dynamic> toMap() => {
     "id": id,
     "nama_hotel": namaHotel,
     "deskripsi_hotel": deskripsiHotel,
-    "address": alamat,
+    "alamat": alamat,
+    "kota": kota, // ⬅️ jangan lupa juga
   };
 }

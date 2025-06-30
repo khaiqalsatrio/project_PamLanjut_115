@@ -20,7 +20,8 @@ class CustomerRepository {
   ) async {
     try {
       final response = await _client.postWithToken(
-        'user/customer/booking_kamar.php',
+        // 'user/customer/booking_kamar.php',
+        'customer/booking',
         requestModel.toMap(),
       );
       if (response.statusCode == 200) {
@@ -37,7 +38,8 @@ class CustomerRepository {
   Future<Either<String, GetAllHotelResponseModel>> getAllHotel() async {
     try {
       final response = await _client.get(
-        'user/customer/get_all_hotel.php',
+        // 'user/customer/get_all_hotel.php',
+        'hotels',
         headers: {},
       );
       final jsonResponse = json.decode(response.body);
@@ -47,13 +49,15 @@ class CustomerRepository {
     }
   }
 
+  // ini dengan laravel
+
   Future<Either<String, GetKamarByHotelResponseModel>> getKamarByHotel(
     GetKamarByHotelRequestModel request,
   ) async {
     try {
-      final response = await _client.post(
-        'user/customer/get_kamar_by_hotel.php',
-        request.toMap(),
+      final response = await _client.get(
+        'hotels/${request.idHotel}/kamars',
+        headers: {},
       );
       final jsonResponse = json.decode(response.body);
       return Right(GetKamarByHotelResponseModel.fromMap(jsonResponse));
@@ -62,12 +66,28 @@ class CustomerRepository {
     }
   }
 
+  // Future<Either<String, GetKamarByHotelResponseModel>> getKamarByHotel(
+  //   GetKamarByHotelRequestModel request,
+  // ) async {
+  //   try {
+  //     final response = await _client.post(
+  //       'user/customer/get_kamar_by_hotel.php',
+  //       request.toMap(),
+  //     );
+  //     final jsonResponse = json.decode(response.body);
+  //     return Right(GetKamarByHotelResponseModel.fromMap(jsonResponse));
+  //   } catch (e) {
+  //     return Left('Failed to get kamar: $e');
+  //   }
+  // }
+
   Future<Either<String, GetBookingResponseModel>> getBooking(
     int idBooking,
   ) async {
     try {
       final response = await _client.getWithToken(
-        'user/customer/get_booking.php',
+        // 'user/customer/get_booking.php',
+        'customer/booking',
         {},
       );
       if (kDebugMode) {
@@ -107,6 +127,22 @@ class CustomerRepository {
       }
     } catch (e) {
       return Left('Error saat upload bukti: $e');
+    }
+  }
+
+  Future<Either<String, GetAllHotelResponseModel>> searchHotelByKota(
+    String keyword,
+  ) async {
+    try {
+      final response = await _client.getWithToken(
+        'admin/hotel-search?keyword=$keyword',
+        {},
+      );
+
+      final jsonResponse = json.decode(response.body);
+      return Right(GetAllHotelResponseModel.fromMap(jsonResponse));
+    } catch (e) {
+      return Left('Failed to search hotels: $e');
     }
   }
 }

@@ -18,7 +18,8 @@ class AuthRepository {
   ) async {
     try {
       final response = await _serviceHttpCliet.post(
-        'user/auth/login.php',
+        // 'user/auth/login.php',
+        'login',
         requestModel.toMap(),
       );
       final jsonResponse = json.decode(response.body);
@@ -55,7 +56,8 @@ class AuthRepository {
   ) async {
     try {
       final response = await _serviceHttpCliet.post(
-        'user/auth/register.php',
+        // 'user/auth/register.php',
+        'register',
         requestModel.toMap(),
       );
       if (kDebugMode) {
@@ -63,7 +65,8 @@ class AuthRepository {
         print('Register response body: ${response.body}');
       }
       final jsonResponse = json.decode(response.body);
-      if (response.statusCode == 200 && jsonResponse['status'] == true) {
+      if ((response.statusCode == 200 || response.statusCode == 201) &&
+          jsonResponse['status'] == true) {
         return Right(jsonResponse['message'] ?? "Register success");
       } else {
         return Left(jsonResponse['message'] ?? "Registration failed");
@@ -83,7 +86,8 @@ class AuthRepository {
         print("🔐 Token: $token");
       }
       final response = await _serviceHttpCliet.getWithToken(
-        'user/auth/get_profile.php',
+        // 'user/auth/get_profile.php',
+        'profile',
         {},
       );
       if (kDebugMode) {

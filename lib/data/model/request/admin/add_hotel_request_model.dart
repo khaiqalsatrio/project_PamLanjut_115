@@ -28,35 +28,43 @@ class AddHotelRequestModel {
   final String? deskripsiHotel;
   final String? latitude;
   final String? longitude;
-  final String? address;
+  final String? alamat; // ganti dari "address" menjadi "alamat"
+  final String? kota;
 
   AddHotelRequestModel({
     this.namaHotel,
     this.deskripsiHotel,
     this.latitude,
     this.longitude,
-    this.address,
+    this.alamat,
+    this.kota,
   });
 
+  // Untuk decode dari JSON string
   factory AddHotelRequestModel.fromJson(String str) =>
       AddHotelRequestModel.fromMap(json.decode(str));
 
+  // Untuk encode ke JSON string
   String toJson() => json.encode(toMap());
 
+  // Untuk membuat model dari Map (misalnya response dari API)
   factory AddHotelRequestModel.fromMap(Map<String, dynamic> json) =>
       AddHotelRequestModel(
         namaHotel: json["nama_hotel"],
         deskripsiHotel: json["deskripsi_hotel"],
         latitude: json["latitude"],
         longitude: json["longitude"],
-        address: json["address"],
+        alamat: json["alamat"], // sudah diperbaiki
+        kota: json["kota"],
       );
 
+  // Untuk mengubah model ke Map (sebelum dikirim ke API)
   Map<String, dynamic> toMap() => {
     "nama_hotel": namaHotel,
     "deskripsi_hotel": deskripsiHotel,
     "latitude": latitude,
     "longitude": longitude,
-    "address": address,
+    "alamat": alamat, // sudah diperbaiki
+    "kota": kota,
   };
 }

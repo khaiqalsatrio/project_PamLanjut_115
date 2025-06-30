@@ -34,7 +34,7 @@ class DataBooking {
   final String namaKamar;
   final DateTime? checkInDate;
   final DateTime? checkOutDate;
-  final String harga;
+  final int harga;
   final String status;
   final String? buktiBayar;
   final String namaHotel;
@@ -52,11 +52,6 @@ class DataBooking {
     required this.namaHotel,
   });
 
-  factory DataBooking.fromJson(String str) =>
-      DataBooking.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
   factory DataBooking.fromMap(Map<String, dynamic> json) => DataBooking(
     id: json["id"] ?? 0,
     idUser: json["id_user"] ?? 0,
@@ -70,7 +65,7 @@ class DataBooking {
         json["check_out_date"] != null
             ? DateTime.tryParse(json["check_out_date"])
             : null,
-    harga: json["harga"] ?? '',
+    harga: json["harga"] ?? 0,
     status: json["status"] ?? '',
     buktiBayar: json["bukti_bayar"],
     namaHotel: json["nama_hotel"] ?? '',
