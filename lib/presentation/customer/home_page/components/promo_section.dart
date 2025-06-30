@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class PromoSection extends StatelessWidget {
-  const PromoSection({super.key});
+  final double titleTopPadding; // parameter untuk mengatur tinggi teks judul
+
+  const PromoSection({
+    super.key,
+    this.titleTopPadding = 0.0, // default: 0
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -10,24 +15,26 @@ class PromoSection extends StatelessWidget {
       "Diskon 50% untuk pengguna baru",
       "Gratis Sarapan untuk semua booking",
     ];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(height: titleTopPadding), // jarak dari atas bisa diatur
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
             "Promo Spesial Hari Ini",
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.w700,
               color: Colors.black87,
               letterSpacing: 0.3,
             ),
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 5),
         SizedBox(
-          height: 130,
+          height: 145,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -52,25 +59,27 @@ class PromoSection extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-                    Positioned(
-                      bottom: 12,
-                      left: 12,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 6,
-                        ),
-                        decoration: BoxDecoration(
-                          // ignore: deprecated_member_use
-                          color: Colors.black.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          promoTexts[index],
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 12.0, bottom: 4.0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            // ignore: deprecated_member_use
+                            color: Colors.black.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            promoTexts[index],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
