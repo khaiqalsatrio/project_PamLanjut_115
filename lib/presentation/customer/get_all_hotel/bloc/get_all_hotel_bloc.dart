@@ -30,5 +30,39 @@ class GetAllHotelBloc extends Bloc<GetAllHotelEvent, GetAllHotelState> {
         },
       );
     });
+    on<FetchAllHotelEvent>((event, emit) async {
+      if (kDebugMode) print("FetchAllHotelEvent dipanggil!");
+      emit(GetAllHotelLoading());
+      final result = await repository.getAllHotel();
+      result.fold(
+        (err) {
+          if (kDebugMode) print("Gagal ambil hotel: $err");
+          emit(GetAllHotelFailure(err));
+        },
+        (data) {
+          final hotels = data.data ?? [];
+          if (kDebugMode) {
+            print("Dapat ${hotels.length} hotel");
+          }
+          emit(GetAllHotelSuccess(hotels));
+        },
+      );
+    });
+
+    on<SearchHotelByKotaEvent>((event, emit) async {
+      if (kDebugMode) print("SearchHotelByKotaEvent: ${event.keyword}");
+      emit(GetAllHotelLoading());
+      final result = await repository.searchHotelByKota(event.keyword);
+      result.fold(
+        (err) {
+          if (kDebugMode) print("Gagal cari hotel: $err");
+          emit(GetAllHotelFailure(err));
+        },
+        (data) {
+          final hotels = data.data ?? [];
+          emit(GetAllHotelSuccess(hotels));
+        },
+      );
+    });
   }
 }
