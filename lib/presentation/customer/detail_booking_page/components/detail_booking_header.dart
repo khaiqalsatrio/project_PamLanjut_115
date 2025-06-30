@@ -6,19 +6,16 @@ class DetailBookingHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 110,
+      height: 130,
       padding: const EdgeInsets.only(top: 40, left: 20),
       decoration: const BoxDecoration(
         color: Color.fromARGB(255, 139, 162, 231),
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(25),
-          bottomRight: Radius.circular(25),
-        ),
       ),
       alignment: Alignment.centerLeft,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: const [
+          SizedBox(height: 20),
           Text(
             "Detail Booking",
             style: TextStyle(
@@ -27,7 +24,7 @@ class DetailBookingHeader extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 4),
+          SizedBox(height: 5),
           Text(
             "Informasi lengkap mengenai booking anda",
             style: TextStyle(color: Colors.white, fontSize: 14),

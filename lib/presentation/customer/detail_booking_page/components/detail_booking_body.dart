@@ -10,7 +10,6 @@ class DetailBookingBody extends StatelessWidget {
     locale: 'id_ID',
     symbol: 'Rp ',
   );
-
   Widget _buildInfoRow(
     IconData icon,
     String label,
@@ -45,11 +44,9 @@ class DetailBookingBody extends StatelessWidget {
         if (state is BookingDetailLoading) {
           return const Center(child: CircularProgressIndicator());
         }
-
         if (state is BookingDetailFailure) {
           return Center(child: Text("❌ ${state.message}"));
         }
-
         if (state is BookingDetailSuccess) {
           final bookings = state.bookings;
           if (bookings.isEmpty) {
@@ -78,7 +75,6 @@ class DetailBookingBody extends StatelessWidget {
               ),
             );
           }
-
           return ListView.separated(
             padding: const EdgeInsets.all(16),
             itemCount: bookings.length,
@@ -165,9 +161,7 @@ class DetailBookingBody extends StatelessWidget {
                           _buildInfoRow(
                             Icons.attach_money,
                             'Harga',
-                            currencyFormatter.format(
-                              int.tryParse(booking.harga) ?? 0,
-                            ),
+                            currencyFormatter.format(booking.harga),
                           ),
                           const SizedBox(height: 6),
                           _buildInfoRow(
@@ -190,7 +184,6 @@ class DetailBookingBody extends StatelessWidget {
             },
           );
         }
-
         return const Center(child: Text("Memuat data..."));
       },
     );
