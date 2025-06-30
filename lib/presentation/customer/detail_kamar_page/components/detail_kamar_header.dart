@@ -16,13 +16,9 @@ class DetailKamarHeader extends StatelessWidget {
       children: [
         // Background
         Container(
-          height: 125,
+          height: 130,
           decoration: const BoxDecoration(
             color: Color.fromARGB(255, 139, 162, 231),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(25),
-              bottomRight: Radius.circular(25),
-            ),
           ),
         ),
         // Konten

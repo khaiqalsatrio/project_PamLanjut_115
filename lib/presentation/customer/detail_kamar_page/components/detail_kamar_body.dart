@@ -52,7 +52,7 @@ class DetailKamarBody extends StatelessWidget {
                   ),
                   // List Kamar
                   SizedBox(
-                    height: 265,
+                    height: 260,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -175,7 +175,7 @@ class DetailKamarBody extends StatelessWidget {
                       },
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 5),
                   // PROMO SECTION
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),

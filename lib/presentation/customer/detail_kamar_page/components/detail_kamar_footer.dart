@@ -22,7 +22,7 @@ class DetailKamarFooter extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Card(
-            elevation: 4,
+            elevation: 10,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
