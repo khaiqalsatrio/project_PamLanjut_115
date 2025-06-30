@@ -4,8 +4,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class ServiceHttpClient {
-  // Ganti dengan IP lokal sesuai PC kamu + folder project
-  final String baseUrl = 'http://10.0.2.2/api_inapgo/';
+  // final String baseUrl = 'http://10.0.2.2/api_inapgo/'; // ini URL dengan Inapgo
+
+  // ini URL dengan Laravel
+  final String baseUrl = 'http://10.0.2.2:8000/api/';
+
   final secureStorage = FlutterSecureStorage();
 
   /// POST tanpa token
@@ -108,6 +111,74 @@ class ServiceHttpClient {
       return response;
     } catch (e) {
       throw Exception("GET with token failed: $e");
+    }
+  }
+
+  /// Update dengan token
+  Future<http.Response> putWithToken(String endpoint, dynamic body) async {
+    final token = await secureStorage.read(key: "authToken");
+    final url = Uri.parse("$baseUrl$endpoint");
+
+    if (token == null) {
+      throw Exception("Token is null. Please login again.");
+    }
+
+    if (kDebugMode) {
+      print("🔐 PUT with Token URL: $url");
+      print("🔐 Token: $token");
+      print("📦 BODY: $body");
+    }
+
+    try {
+      final response = await http.put(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: body is String ? body : json.encode(body),
+      );
+      if (kDebugMode) {
+        print("STATUS: ${response.statusCode}");
+        print("RESPONSE BODY: ${response.body}");
+      }
+      return response;
+    } catch (e) {
+      throw Exception("PUT with token failed: $e");
+    }
+  }
+
+  /// DELETE dengan token
+  Future<http.Response> deleteWithToken(String endpoint) async {
+    final token = await secureStorage.read(key: "authToken");
+    final url = Uri.parse("$baseUrl$endpoint");
+
+    if (token == null) {
+      throw Exception("Token is null. Please login again.");
+    }
+
+    if (kDebugMode) {
+      print("🔐 DELETE with Token URL: $url");
+      print("🔐 Token: $token");
+    }
+
+    try {
+      final response = await http.delete(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      );
+      if (kDebugMode) {
+        print("STATUS: ${response.statusCode}");
+        print("RESPONSE BODY: ${response.body}");
+      }
+      return response;
+    } catch (e) {
+      throw Exception("DELETE with token failed: $e");
     }
   }
 }

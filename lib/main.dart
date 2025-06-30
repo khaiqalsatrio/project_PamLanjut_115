@@ -1,122 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/data/repository/admin_repository.dart';
+import 'package:project_akhir_pam_lanjut_115/data/repository/auth_repository.dart';
+import 'package:project_akhir_pam_lanjut_115/data/repository/customer_repository.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/add_hotel/add_hotel_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/add_kamar/add_kamar_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/get_kamar/get_kamar_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/delete_kamar/delete_kamar_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/update_kamar/update_kamar_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/get_hotel/get_hotel_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/data_boking_page/bloc/get_booking_by_hotel_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/auth/login_page/bloc/login_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/auth/login_page/screen/login_screen.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/auth/register_page/bloc/register_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/auth/register_page/screen/register_screen.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/customer/booking_page/bloc/booking_kamar_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/customer/detail_booking_page/bloc/booking_detail_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/customer/detail_kamar_page/bloc/detail_kamar_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/customer/get_all_hotel/bloc/get_all_hotel_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/customer/home_page/screen/home_screen_customer.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/customer/profile_page/bloc/get_profile_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/service/service_http_client.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', null);
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+    final serviceClient = ServiceHttpClient();
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+    final authRepository = AuthRepository(serviceClient);
+    final customerRepository = CustomerRepository(serviceClient);
+    final adminRepository = AdminRepository(serviceClient);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<AuthRepository>(create: (_) => authRepository),
+        RepositoryProvider<CustomerRepository>(
+          create: (_) => customerRepository,
+        ),
+        RepositoryProvider<AdminRepository>(create: (_) => adminRepository),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (_) => LoginBloc(authRepository: authRepository),
+          ),
+          BlocProvider(
+            create: (_) => RegisterBloc(authRepository: authRepository),
+          ),
+          BlocProvider(create: (_) => GetAllHotelBloc(customerRepository)),
+          BlocProvider(create: (_) => DetailKamarBloc(customerRepository)),
+          BlocProvider(create: (_) => BookingDetailBloc(customerRepository)),
+          BlocProvider(create: (_) => BookingKamarBloc(customerRepository)),
+          BlocProvider(create: (_) => GetProfileBloc(authRepository)),
+          BlocProvider(create: (_) => GetHotelBloc(adminRepository)),
+          BlocProvider(create: (_) => GetKamarBloc(adminRepository)),
+          BlocProvider(create: (_) => AddKamarBloc(adminRepository)),
+          BlocProvider(create: (_) => UpdateKamarBloc(adminRepository)),
+          BlocProvider(create: (_) => DeleteKamarBloc(adminRepository)),
+          BlocProvider(create: (_) => AddHotelBloc(adminRepository)),
+          BlocProvider(create: (_) => GetBookingByHotelBloc(adminRepository)),
+        ],
+        child: MaterialApp(
+          title: 'Inap Go',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          initialRoute: '/login',
+          routes: {
+            '/login': (context) => const LoginScreen(),
+            '/register': (context) => const RegisterScreen(),
+            '/home': (context) => const HomeScreenCustomer(),
+          },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
