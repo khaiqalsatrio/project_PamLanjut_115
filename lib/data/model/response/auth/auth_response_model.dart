@@ -43,18 +43,16 @@ class User {
   final String? nama;
   final String? email;
   final String? role;
+  final String? imageUrl;
 
-  User({this.id, this.nama, this.email, this.role});
-
-  factory User.fromJson(String str) => User.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
+  User({this.id, this.nama, this.email, this.role, this.imageUrl});
 
   factory User.fromMap(Map<String, dynamic> json) => User(
     id: json['id'],
     nama: json['nama'],
     email: json['email'],
     role: json['role'],
+    imageUrl: json['image_url'],
   );
 
   Map<String, dynamic> toMap() => {
@@ -62,5 +60,6 @@ class User {
     'nama': nama,
     'email': email,
     'role': role,
+    'image_url': imageUrl,
   };
 }

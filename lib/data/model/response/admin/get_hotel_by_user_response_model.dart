@@ -36,8 +36,15 @@ class DataHotel {
   final String? namaHotel;
   final String? deskripsiHotel;
   final String? alamat;
+  final String? imageUrl;
 
-  DataHotel({this.id, this.namaHotel, this.deskripsiHotel, this.alamat});
+  DataHotel({
+    this.id,
+    this.namaHotel,
+    this.deskripsiHotel,
+    this.alamat,
+    this.imageUrl,
+  });
 
   factory DataHotel.fromJson(String str) => DataHotel.fromMap(json.decode(str));
 
@@ -48,6 +55,7 @@ class DataHotel {
     namaHotel: json["nama_hotel"],
     deskripsiHotel: json["deskripsi_hotel"],
     alamat: json["alamat"],
+    imageUrl: json["image_url"],
   );
 
   Map<String, dynamic> toMap() => {
@@ -55,5 +63,6 @@ class DataHotel {
     "nama_hotel": namaHotel,
     "deskripsi_hotel": deskripsiHotel,
     "alamat": alamat,
+    "image_url": imageUrl,
   };
 }

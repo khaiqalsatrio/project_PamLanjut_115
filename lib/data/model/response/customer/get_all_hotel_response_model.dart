@@ -33,26 +33,25 @@ class DataHotel {
   final String? namaHotel;
   final String? deskripsiHotel;
   final String? alamat;
-  final String? kota; // ⬅️ tambahkan ini
+  final String? kota;
+  final String? imageUrl; // ⬅️ ganti dari imageUrl ke imageBase64
 
   DataHotel({
     this.id,
     this.namaHotel,
     this.deskripsiHotel,
     this.alamat,
-    this.kota, // ⬅️ dan ini
+    this.kota,
+    this.imageUrl,
   });
 
-  factory DataHotel.fromJson(String str) => DataHotel.fromMap(json.decode(str));
-
-  String toJson() => json.encode(toMap());
-
   factory DataHotel.fromMap(Map<String, dynamic> json) => DataHotel(
-    id: json["id"] is int ? json["id"] : int.tryParse(json["id"].toString()),
+    id: json["id"],
     namaHotel: json["nama_hotel"],
     deskripsiHotel: json["deskripsi_hotel"],
     alamat: json["alamat"],
-    kota: json["kota"], // ⬅️ ini penting
+    kota: json["kota"],
+    imageUrl: json["image_url"], // field ini harus dikirim dari backend
   );
 
   Map<String, dynamic> toMap() => {
@@ -60,6 +59,7 @@ class DataHotel {
     "nama_hotel": namaHotel,
     "deskripsi_hotel": deskripsiHotel,
     "alamat": alamat,
-    "kota": kota, // ⬅️ jangan lupa juga
+    "kota": kota,
+    "image_url": imageUrl,
   };
 }
