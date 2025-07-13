@@ -102,7 +102,6 @@ class BookingFooter extends StatelessWidget {
                       final String email = user.email ?? '-';
                       final bool isWanita = nama.toLowerCase().contains('ny');
                       final String sapaan = isWanita ? 'Ny.' : 'Tn.';
-
                       return Card(
                         elevation: 2,
                         shape: RoundedRectangleBorder(
@@ -163,8 +162,6 @@ class BookingFooter extends StatelessWidget {
                     return const SizedBox();
                   },
                 ),
-
-                /// 🔹 Field Check-In / Check-Out
                 _buildDateField(
                   label: 'Tanggal Check-In',
                   icon: Icons.calendar_today,
@@ -179,8 +176,6 @@ class BookingFooter extends StatelessWidget {
                   onTap: onTapCheckout,
                 ),
                 const SizedBox(height: 24),
-
-                /// 🔹 Tombol Booking
                 bookingState is BookingKamarLoading
                     ? const CircularProgressIndicator()
                     : SizedBox(
@@ -222,7 +217,6 @@ class BookingFooter extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
-
                 const SizedBox(height: 32),
               ],
             ),
