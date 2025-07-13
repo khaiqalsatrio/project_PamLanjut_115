@@ -34,7 +34,7 @@ class DetailKamarBody extends StatelessWidget {
 
           return SingleChildScrollView(
             child: Container(
-              padding: const EdgeInsets.only(bottom: 16),
+              padding: const EdgeInsets.only(bottom: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -57,9 +57,7 @@ class DetailKamarBody extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       itemCount: kamars.length,
-                      separatorBuilder:
-                          (_, __) =>
-                              const SizedBox(width: 16), // Jarak antar kartu
+                      separatorBuilder: (_, __) => const SizedBox(width: 16),
                       itemBuilder: (context, index) {
                         final kamar = kamars[index];
                         return GestureDetector(
@@ -84,20 +82,19 @@ class DetailKamarBody extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            elevation: 10,
+                            elevation: 7,
                             shadowColor: Colors.black26,
                             child: SizedBox(
                               width: 200,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Gambar Placeholder
                                   ClipRRect(
                                     borderRadius: const BorderRadius.vertical(
                                       top: Radius.circular(12),
                                     ),
                                     child: Container(
-                                      height: 155,
+                                      height: 150,
                                       color: const Color.fromARGB(
                                         255,
                                         216,
@@ -113,7 +110,6 @@ class DetailKamarBody extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  // Detail Kamar
                                   Padding(
                                     padding: const EdgeInsets.all(12),
                                     child: Column(
@@ -175,12 +171,13 @@ class DetailKamarBody extends StatelessWidget {
                       },
                     ),
                   ),
-                  const SizedBox(height: 5),
+
+                  const SizedBox(height: 15),
                   // PROMO SECTION
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      "Promo Spesial",
+                      "Metode Pembayaran",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -190,69 +187,52 @@ class DetailKamarBody extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
-                    height: 120,
+                    height: 75, // ← Ukuran keseluruhan diperkecil
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      itemCount: 2,
-                      separatorBuilder: (_, __) => const SizedBox(width: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 18),
+                      itemCount: 4,
+                      separatorBuilder:
+                          (_, __) =>
+                              const SizedBox(width: 12), // jarak antar card
                       itemBuilder: (context, index) {
-                        final promoImages = [
-                          "assets/images/diskon.jpg",
-                          "assets/images/diskon.jpg",
+                        final ewalletImages = [
+                          "assets/images/linkaja.jpg",
+                          "assets/images/gopay.jpg",
+                          "assets/images/dana.jpg",
+                          "assets/images/shopepay.jpg",
                         ];
-                        final promoTexts = [
-                          "Diskon 50% untuk pengguna baru",
-                          "Gratis Sarapan untuk semua booking",
-                        ];
-                        return Container(
-                          width: 280,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            image: DecorationImage(
-                              image: AssetImage(promoImages[index]),
-                              fit: BoxFit.cover,
-                            ),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 6,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
+                        return Card(
+                          elevation: 5,
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
                           ),
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                bottom: 10,
-                                left: 10,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    // ignore: deprecated_member_use
-                                    color: Colors.black.withOpacity(0.6),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Text(
-                                    promoTexts[index],
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ),
+                          child: SizedBox(
+                            width: 75,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 6,
+                                horizontal: 4,
                               ),
-                            ],
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    ewalletImages[index],
+                                    width: 50,
+                                    height: 50,
+                                  ),
+                                  const SizedBox(height: 4),
+                                ],
+                              ),
+                            ),
                           ),
                         );
                       },
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   const DetailKamarFooter(),
                 ],
               ),

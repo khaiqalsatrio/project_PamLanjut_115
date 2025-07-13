@@ -13,7 +13,7 @@ class DetailKamarFooter extends StatelessWidget {
           child: Text(
             "Fasilitas Penginapan",
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 17,
               fontWeight: FontWeight.bold,
               color: Colors.black87,
             ),
@@ -22,9 +22,9 @@ class DetailKamarFooter extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Card(
-            elevation: 10,
+            elevation: 7,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(8),
             ),
             child: Padding(
               padding: const EdgeInsets.all(16),
