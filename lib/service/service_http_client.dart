@@ -1,7 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
+// ignore: depend_on_referenced_packages
+import 'package:path/path.dart'; // untuk basename()
+// ignore: depend_on_referenced_packages
+import 'package:http_parser/http_parser.dart'; // untuk MediaType()
 
 class ServiceHttpClient {
   // final String baseUrl = 'http://10.0.2.2/api_inapgo/'; // ini URL dengan Inapgo
@@ -118,17 +124,14 @@ class ServiceHttpClient {
   Future<http.Response> putWithToken(String endpoint, dynamic body) async {
     final token = await secureStorage.read(key: "authToken");
     final url = Uri.parse("$baseUrl$endpoint");
-
     if (token == null) {
       throw Exception("Token is null. Please login again.");
     }
-
     if (kDebugMode) {
       print("🔐 PUT with Token URL: $url");
       print("🔐 Token: $token");
       print("📦 BODY: $body");
     }
-
     try {
       final response = await http.put(
         url,
@@ -153,16 +156,13 @@ class ServiceHttpClient {
   Future<http.Response> deleteWithToken(String endpoint) async {
     final token = await secureStorage.read(key: "authToken");
     final url = Uri.parse("$baseUrl$endpoint");
-
     if (token == null) {
       throw Exception("Token is null. Please login again.");
     }
-
     if (kDebugMode) {
       print("🔐 DELETE with Token URL: $url");
       print("🔐 Token: $token");
     }
-
     try {
       final response = await http.delete(
         url,
@@ -180,5 +180,44 @@ class ServiceHttpClient {
     } catch (e) {
       throw Exception("DELETE with token failed: $e");
     }
+  }
+
+  /// Multipart POST (upload image) dengan token
+  Future<http.Response> postMultipartWithToken({
+    required String endpoint,
+    required File file,
+    String fieldName = 'image',
+  }) async {
+    final token = await secureStorage.read(key: "authToken");
+    final url = Uri.parse("$baseUrl$endpoint");
+    if (token == null) {
+      throw Exception("Token is null. Please login again.");
+    }
+    final mimeType = lookupMimeType(file.path) ?? 'application/octet-stream';
+    final mediaTypeParts = mimeType.split('/');
+    final request = http.MultipartRequest('POST', url);
+    request.headers['Authorization'] = 'Bearer $token';
+    request.headers['Accept'] = 'application/json';
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        fieldName,
+        file.path,
+        filename: basename(file.path),
+        contentType: MediaType(mediaTypeParts[0], mediaTypeParts[1]),
+      ),
+    );
+    if (kDebugMode) {
+      print("📤 UPLOAD TO: $url");
+      print("📦 File: ${file.path}");
+      print("🧾 MIME: $mimeType");
+      print("🔐 Token: $token");
+    }
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+    if (kDebugMode) {
+      print("📥 Response status: ${response.statusCode}");
+      print("📥 Response body: ${response.body}");
+    }
+    return response;
   }
 }
