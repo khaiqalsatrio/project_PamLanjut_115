@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -13,6 +14,7 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   final Completer<GoogleMapController> _controller = Completer();
+  final TextEditingController _searchController = TextEditingController();
   CameraPosition? _initialCamera;
   Position? _currentPosition;
   Marker? _pickedMarker;
@@ -102,6 +104,33 @@ class _MapPageState extends State<MapPage> {
     }
   }
 
+  Future<void> _searchLocation(String address) async {
+    if (address.isEmpty) return;
+    setState(() => _isLoading = true);
+    try {
+      final locations = await locationFromAddress(address);
+      if (locations.isNotEmpty) {
+        final loc = locations.first;
+        final latLng = LatLng(loc.latitude, loc.longitude);
+        await _onTap(latLng);
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Alamat tidak ditemukan.')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Gagal mencari lokasi: $e')));
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
   void _confirmSelection() {
     if (_pickedAddress == null || _pickedMarker == null) return;
     final result = MapResult(
@@ -133,11 +162,16 @@ class _MapPageState extends State<MapPage> {
     if (_initialCamera == null) {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Pilih Lokasi'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Pilih Lokasi'),
+        centerTitle: true,
+        backgroundColor: Colors.blueAccent,
+        elevation: 0,
+      ),
       body: Stack(
         children: [
-          // MAP
           GoogleMap(
             initialCameraPosition: _initialCamera!,
             myLocationEnabled: true,
@@ -154,43 +188,76 @@ class _MapPageState extends State<MapPage> {
             markers: _pickedMarker != null ? {_pickedMarker!} : {},
             onTap: _onTap,
           ),
-          // ADDRESS CARD
+
+          // SEARCH BAR
+          Positioned(
+            top: 20,
+            left: 16,
+            right: 16,
+            child: Material(
+              elevation: 6,
+              borderRadius: BorderRadius.circular(12),
+              child: TextField(
+                controller: _searchController,
+                textInputAction: TextInputAction.search,
+                onSubmitted: _searchLocation,
+                decoration: InputDecoration(
+                  hintText: 'Cari kota, negara, atau jalan...',
+                  prefixIcon: const Icon(CupertinoIcons.search),
+                  suffixIcon: IconButton(
+                    icon: const Icon(CupertinoIcons.clear_circled),
+                    onPressed: () => _searchController.clear(),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 0,
+                  ),
+                ),
+              ),
+            ),
+          ),
+
+          // ALAMAT YANG DIPILIH
           if (_pickedAddress != null)
             Positioned(
               left: 16,
               right: 16,
               bottom: 180,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
+              child: Card(
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
                 ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.location_on, color: Color(0xFF8BA2E7)),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        _pickedAddress!,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                elevation: 6,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        CupertinoIcons.location_solid,
+                        color: Colors.blueAccent,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          _pickedAddress!,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
+
           // LOADING OVERLAY
           if (_isLoading)
             Container(
@@ -199,35 +266,30 @@ class _MapPageState extends State<MapPage> {
             ),
         ],
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(left: 16, bottom: 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Button Lokasi Saya
             FloatingActionButton(
-              heroTag: 'current_location',
+              heroTag: 'loc',
               onPressed: _useCurrentLocation,
-              backgroundColor: const Color.fromARGB(255, 247, 247, 248),
-              tooltip: 'Lokasi Saya',
-              child: const Icon(Icons.my_location, color: Colors.black54),
+              backgroundColor: Colors.white,
+              tooltip: 'Gunakan Lokasi Saya',
+              child: const Icon(Icons.my_location, color: Colors.black),
             ),
             const SizedBox(height: 12),
-            // Jika Ada Lokasi Dipilih
             if (_pickedAddress != null) ...[
               FloatingActionButton.extended(
-                heroTag: 'confirm',
+                heroTag: 'pick',
                 onPressed: _confirmSelection,
-                backgroundColor: const Color.fromARGB(255, 78, 179, 230),
+                backgroundColor: Colors.blueAccent,
                 icon: const Icon(Icons.check, color: Colors.white),
                 label: const Text(
                   "Pilih",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
               const SizedBox(height: 12),
@@ -243,10 +305,7 @@ class _MapPageState extends State<MapPage> {
                 icon: const Icon(Icons.clear, color: Colors.white),
                 label: const Text(
                   "Hapus",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],
