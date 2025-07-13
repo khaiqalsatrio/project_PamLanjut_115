@@ -12,10 +12,10 @@ AppBar HomeCustomerHeader(
     backgroundColor: const Color.fromARGB(255, 139, 162, 231),
     foregroundColor: Colors.white,
     elevation: 0,
-    toolbarHeight: 140,
+    toolbarHeight: 130,
     automaticallyImplyLeading: false,
     flexibleSpace: Padding(
-      padding: const EdgeInsets.only(top: 30, left: 16, right: 16),
+      padding: const EdgeInsets.only(top: 40, left: 16, right: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -77,13 +77,13 @@ AppBar HomeCustomerHeader(
             "Rencanakan perjalanan hemat dengan, InapGo",
             style: TextStyle(color: Colors.white70, fontSize: 14),
           ),
-          const SizedBox(height: 0),
+          const SizedBox(height: 10),
           // TextField Pencarian
           TextField(
             controller: controller,
             onChanged: onChanged,
             decoration: InputDecoration(
-              hintText: "Nama hotel, atau destinasi dll...",
+              hintText: "Cari hotel, atau destinasi dll...",
               fillColor: Colors.white,
               filled: true,
               prefixIcon: const Icon(Icons.search),

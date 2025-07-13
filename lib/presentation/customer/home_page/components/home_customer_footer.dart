@@ -5,7 +5,7 @@ import 'package:project_akhir_pam_lanjut_115/presentation/customer/profile_page/
 
 void handleNavigation(BuildContext context, int index) {
   if (index == 1) {
-    int idBooking = 1; // Ganti ini sesuai data booking
+    int idBooking = 1;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

@@ -95,20 +95,66 @@ class HomeCustomerBody extends StatelessWidget {
                                   borderRadius: const BorderRadius.vertical(
                                     top: Radius.circular(10),
                                   ),
-                                  child: Container(
-                                    height: 125,
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[300],
-                                      image: const DecorationImage(
-                                        image: AssetImage(
-                                          "assets/images/hotel_placeholder.jpg",
-                                        ),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
+                                  child:
+                                      hotel.imageUrl != null &&
+                                              hotel.imageUrl!.isNotEmpty
+                                          ? Image.network(
+                                            hotel.imageUrl!,
+                                            height: 125,
+                                            width: double.infinity,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (
+                                              context,
+                                              error,
+                                              stackTrace,
+                                            ) {
+                                              debugPrint(
+                                                '❌ Gagal memuat gambar hotel:\nURL: ${hotel.imageUrl}\nError: $error\nStacktrace: $stackTrace',
+                                              );
+                                              return const SizedBox(
+                                                height: 125,
+                                                width: double.infinity,
+                                                child: Center(
+                                                  child: Icon(
+                                                    Icons.broken_image,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            loadingBuilder: (
+                                              context,
+                                              child,
+                                              loadingProgress,
+                                            ) {
+                                              if (loadingProgress == null) {
+                                                debugPrint(
+                                                  '✅ Gambar berhasil dimuat: ${hotel.imageUrl}',
+                                                );
+                                                return child;
+                                              }
+                                              return const SizedBox(
+                                                height: 125,
+                                                width: double.infinity,
+                                                child: Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                ),
+                                              );
+                                            },
+                                          )
+                                          : const SizedBox(
+                                            height: 125,
+                                            width: double.infinity,
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.image_not_supported,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ),
                                 ),
+
                                 Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.all(10.0),

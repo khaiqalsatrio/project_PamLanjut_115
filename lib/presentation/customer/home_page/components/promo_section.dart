@@ -34,7 +34,7 @@ class PromoSection extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         SizedBox(
-          height: 145,
+          height: 125,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(horizontal: 10),
