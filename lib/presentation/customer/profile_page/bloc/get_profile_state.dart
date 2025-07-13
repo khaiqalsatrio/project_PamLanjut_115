@@ -15,3 +15,16 @@ class ProfileError extends GetProfileState {
   final String message;
   ProfileError(this.message);
 }
+
+// Tambahan baru:
+class ProfileUploading extends GetProfileState {}
+
+class ProfileUploadSuccess extends GetProfileState {
+  final String imageUrl;
+  ProfileUploadSuccess(this.imageUrl);
+}
+
+class ProfileUploadFailure extends GetProfileState {
+  final String message;
+  ProfileUploadFailure(this.message);
+}
