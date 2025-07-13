@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:project_akhir_pam_lanjut_115/data/model/request/admin/add_kamar_request_model.dart';
-import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/add_kamar/add_kamar_bloc.dart';
-import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/get_kamar/get_kamar_bloc.dart';
-import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/get_kamar/get_kamar_event.dart';
-import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/get_kamar/get_kamar_state.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/home_page_admin/bloc/add_kamar/add_kamar_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/home_page_admin/bloc/get_kamar_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/home_page_admin/bloc/get_kamar_event.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/home_page_admin/bloc/get_kamar_state.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/admin/detail_kamar_admin_page/screen/detail_kamar_screen.dart';
 
 class HomeAdminBody extends StatelessWidget {

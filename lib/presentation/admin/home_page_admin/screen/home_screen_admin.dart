@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/add_kamar/add_kamar_bloc.dart';
-import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/get_kamar/get_kamar_bloc.dart';
-import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/get_kamar/get_kamar_event.dart';
-import 'package:project_akhir_pam_lanjut_115/presentation/admin/bloc/update_kamar/update_kamar_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/home_page_admin/bloc/add_kamar/add_kamar_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/home_page_admin/bloc/get_kamar_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/home_page_admin/bloc/get_kamar_event.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/admin/detail_kamar_admin_page/bloc/update_kamar/update_kamar_bloc.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/admin/home_page_admin/components/home_admin_body.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/admin/home_page_admin/components/home_admin_footer.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/admin/home_page_admin/components/home_admin_header.dart';
