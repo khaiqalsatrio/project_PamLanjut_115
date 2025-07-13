@@ -53,12 +53,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             final user = state.profile;
             return Column(
               children: [
-                ProfileHeader(nama: user.nama, email: user.email),
+                ProfileHeader(
+                  nama: user.nama,
+                  email: user.email,
+                  imageUrl:
+                      user.imageUrl != null
+                          ? '${user.imageUrl}?t=${DateTime.now().millisecondsSinceEpoch}'
+                          : null,
+                ),
                 Expanded(
                   child: ProfileBody(
                     nama: user.nama,
                     email: user.email,
                     role: user.role,
+                    imageUrl:
+                        user.imageUrl != null
+                            ? '${user.imageUrl}?t=${DateTime.now().millisecondsSinceEpoch}'
+                            : null,
                   ),
                 ),
               ],
