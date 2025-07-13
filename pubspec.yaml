@@ -23,6 +23,9 @@ dependencies:
   geocoding: ^3.0.0
   google_maps_flutter: ^2.12.2
   permission_handler: ^12.0.0+1
+  image_picker: ^1.0.4
+  mime: ^1.0.4
+
 
 dev_dependencies:
   flutter_test:
@@ -38,3 +41,7 @@ flutter:
     - assets/images/travel1.jpg
     - assets/images/pesawat1.jpg
     - assets/images/kereta1.jpg
+    - assets/images/gopay.jpg
+    - assets/images/dana.jpg
+    - assets/images/linkaja.jpg
+    - assets/images/shopepay.jpg
