@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:project_akhir_pam_lanjut_115/presentation/customer/detail_booking_page/bloc/booking_detail_bloc.dart';
+import 'package:project_akhir_pam_lanjut_115/presentation/customer/riwayat_page/screen/riwayat_booking_screen.dart';
 
 class DetailBookingBody extends StatelessWidget {
   DetailBookingBody({super.key});
@@ -50,31 +51,47 @@ class DetailBookingBody extends StatelessWidget {
         if (state is BookingDetailSuccess) {
           final bookings = state.bookings;
           if (bookings.isEmpty) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Tidak ada order aktif.",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
-                  Text(
+                  const SizedBox(height: 8),
+                  const Text(
                     "Semua e-tiket milikmu akan ditampilkan di",
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
-                  Text(
+                  const Text(
                     "sini Yuk, rencanakan perjalanan dengan",
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
-                  Text(
+                  const Text(
                     "InapGo.",
                     style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const RiwayatBookingScreen(),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Riwayat Pesanan',
+                      style: TextStyle(fontSize: 16, color: Colors.blue),
+                    ),
                   ),
                 ],
               ),
             );
           }
+
           return ListView.separated(
             padding: const EdgeInsets.all(16),
             itemCount: bookings.length,
