@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:project_akhir_pam_lanjut_115/data/model/request/admin/add_hotel_request_model.dart';
 import 'package:project_akhir_pam_lanjut_115/data/model/request/admin/add_kamar_request_model.dart';
 import 'package:project_akhir_pam_lanjut_115/data/model/request/admin/update_hotel_request_model.dart';
@@ -13,6 +15,7 @@ import 'package:project_akhir_pam_lanjut_115/service/service_http_client.dart';
 
 class AdminRepository {
   final ServiceHttpClient _client;
+  final secureStorage = FlutterSecureStorage();
 
   AdminRepository(this._client);
 
@@ -20,16 +23,14 @@ class AdminRepository {
     try {
       final response = await _client.postWithToken(
         'admin/hotel',
-        request.toMap(), // ✅ gunakan toMap(), bukan toJson()
+        request.toMap(),
       );
-
       if (kDebugMode) {
         print('Response status: ${response.statusCode}');
       }
       if (kDebugMode) {
         print('Response body: ${response.body}');
       }
-
       final jsonResponse = json.decode(response.body);
       return Right(jsonResponse['status'] == true);
     } catch (e) {
@@ -196,6 +197,85 @@ class AdminRepository {
         print("Error in checkIfAdminHasHotel: $e");
       }
       return false;
+    }
+  }
+
+  Future<Either<String, GetHotelByUserResponseModel>> getHotelDetail() async {
+    try {
+      final token = await secureStorage.read(key: "authToken");
+      if (token == null) {
+        return Left("Token tidak tersedia. Silakan login kembali.");
+      }
+      final response = await _client.getWithToken(
+        'admin/hotel', // ✅ Fix path
+        {},
+      );
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        return Right(GetHotelByUserResponseModel.fromMap(jsonResponse));
+      } else {
+        final jsonResponse = json.decode(response.body);
+        return Left(jsonResponse['message'] ?? 'Gagal mengambil data hotel');
+      }
+    } catch (e) {
+      return Left("Terjadi kesalahan saat mengambil data hotel: $e");
+    }
+  }
+
+  Future<Either<String, Uint8List>> getHotelImageByToken() async {
+    try {
+      final token = await secureStorage.read(key: "authToken");
+      if (token == null) {
+        return Left("Token tidak tersedia. Silakan login kembali.");
+      }
+      final response = await _client.getWithToken(
+        'hotel/image', // Sesuai route backend
+        {},
+      );
+      if (response.statusCode == 200) {
+        return Right(response.bodyBytes); // ✅ bentuk gambar (blob)
+      } else {
+        final jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+        return Left(jsonResponse['message'] ?? 'Gagal mengambil gambar');
+      }
+    } catch (e) {
+      return Left("Terjadi kesalahan saat mengambil gambar: $e");
+    }
+  }
+
+  Future<Either<String, String>> uploadHotelImage(File imageFile) async {
+    try {
+      final response = await _client.postMultipartWithToken(
+        endpoint: 'uploadHotelImage',
+        file: imageFile,
+      );
+      final jsonResponse = json.decode(response.body);
+      if (response.statusCode == 200 && jsonResponse['status'] == true) {
+        // Ambil ulang profil agar URL gambar terupdate
+        await getHotelDetail();
+        return Right(jsonResponse['image_url'] ?? 'Upload berhasil');
+      } else {
+        return Left(jsonResponse['message'] ?? 'Upload gagal');
+      }
+    } catch (e) {
+      return Left("Terjadi kesalahan saat upload foto: $e");
+    }
+  }
+
+  Future<Either<String, bool>> confirmBooking(int bookingId) async {
+    try {
+      final response = await _client.postWithToken(
+        'booking/confirm/$bookingId',
+        {}, // body kosong karena endpoint hanya butuh ID di URL
+      );
+      final jsonResponse = json.decode(response.body);
+      if (response.statusCode == 200 && jsonResponse['status'] == true) {
+        return Right(true);
+      } else {
+        return Left(jsonResponse['message'] ?? 'Gagal konfirmasi booking');
+      }
+    } catch (e) {
+      return Left('Terjadi kesalahan saat konfirmasi booking: $e');
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -101,6 +102,25 @@ class AuthRepository {
       }
     } catch (e) {
       return Left("Terjadi kesalahan saat mengambil profil: $e");
+    }
+  }
+
+  Future<Either<String, String>> uploadProfileImage(File imageFile) async {
+    try {
+      final response = await _serviceHttpCliet.postMultipartWithToken(
+        endpoint: 'uploadProfileImage',
+        file: imageFile,
+      );
+      final jsonResponse = json.decode(response.body);
+      if (response.statusCode == 200 && jsonResponse['status'] == true) {
+        // Ambil ulang profil agar URL gambar terupdate
+        await getProfile();
+        return Right(jsonResponse['image_url'] ?? 'Upload berhasil');
+      } else {
+        return Left(jsonResponse['message'] ?? 'Upload gagal');
+      }
+    } catch (e) {
+      return Left("Terjadi kesalahan saat upload foto: $e");
     }
   }
 }

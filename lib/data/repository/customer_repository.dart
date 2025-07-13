@@ -8,6 +8,7 @@ import 'package:project_akhir_pam_lanjut_115/data/model/response/customer/bookin
 import 'package:project_akhir_pam_lanjut_115/data/model/response/customer/get_all_hotel_response_model.dart';
 import 'package:project_akhir_pam_lanjut_115/data/model/response/customer/get_booking_response_model.dart';
 import 'package:project_akhir_pam_lanjut_115/data/model/response/customer/get_kamar_by_hotel_response_model.dart';
+import 'package:project_akhir_pam_lanjut_115/data/model/response/customer/get_riwayat_booking_response_model.dart';
 import 'package:project_akhir_pam_lanjut_115/service/service_http_client.dart';
 
 class CustomerRepository {
@@ -28,7 +29,7 @@ class CustomerRepository {
         final jsonResponse = json.decode(response.body);
         return Right(BookingKamarResponseModel.fromMap(jsonResponse));
       } else {
-        return Left('Server error: ${response.statusCode}');
+        return Left('Check-in harus sebelum check-out.');
       }
     } catch (e) {
       return Left('Failed to booking kamar: ${e..toString()}');
@@ -138,11 +139,30 @@ class CustomerRepository {
         'admin/hotel-search?keyword=$keyword',
         {},
       );
-
       final jsonResponse = json.decode(response.body);
       return Right(GetAllHotelResponseModel.fromMap(jsonResponse));
     } catch (e) {
       return Left('Failed to search hotels: $e');
+    }
+  }
+
+  Future<Either<String, GetRiwayatBookingResponseModel>>
+  getRiwayatBooking() async {
+    try {
+      final response = await _client.getWithToken(
+        'customer/riwayat-booking',
+        {},
+      );
+      if (response.statusCode == 200) {
+        final model = GetRiwayatBookingResponseModel.fromJson(response.body);
+        return Right(model);
+      } else {
+        return Left(
+          'Gagal mengambil data riwayat. Code: ${response.statusCode}',
+        );
+      }
+    } catch (e) {
+      return Left('Terjadi kesalahan: $e');
     }
   }
 }
