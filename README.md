@@ -2,7 +2,9 @@
 
 adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu traveler dengan anggaran terbatas dalam mencari dan memesan penginapan secara cepat, mudah, dan efisien.
 
-## Role Customer
+### Role Customer
+
+
 
 <img width="369" height="817" alt="Image" src="https://github.com/user-attachments/assets/aceeacb2-04ab-44fc-b796-177cef7bf80c" />
 <img width="365" height="809" alt="Image" src="https://github.com/user-attachments/assets/ab0eedaf-0bea-4859-a735-c929756686ba" />
@@ -20,7 +22,9 @@ adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu traveler d
 <img width="367" height="820" alt="Image" src="https://github.com/user-attachments/assets/c5cdd453-faed-487f-954d-6a4e38fe5f5c" />
 
 
-## Role Admin / Pemilik
+### Role Admin / Pemilik
+
+
 
 <img width="366" height="813" alt="Image" src="https://github.com/user-attachments/assets/afc90405-bb38-45e7-8f92-ee956908f23e" />
 <img width="369" height="819" alt="Image" src="https://github.com/user-attachments/assets/830645cb-3f7b-4d8a-afa1-b365858a566b" />
@@ -39,14 +43,9 @@ adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu traveler d
 
 
 <img width="375" height="804" alt="Image" src="https://github.com/user-attachments/assets/686bd3b0-4cd3-42c5-9886-dd2281e15ef8" />
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
