@@ -40,7 +40,7 @@ adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu traveler d
 
 <img width="375" height="804" alt="Image" src="https://github.com/user-attachments/assets/686bd3b0-4cd3-42c5-9886-dd2281e15ef8" />
 
-## Pendaftaran Hotel baru untuk admin yang barus daftar
+## Pendaftaran Hotel baru untuk admin / Pemilik yang barus mendaftar
 
 <img width="375" height="809" alt="Image" src="https://github.com/user-attachments/assets/0277bd82-6849-4a15-ae5e-99a32d3bcec9" />
 <img width="376" height="810" alt="Image" src="https://github.com/user-attachments/assets/880f0e8e-5c4f-4a00-a96a-367c0c36a8ce" />
@@ -53,8 +53,3 @@ adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu traveler d
 <img width="382" height="819" alt="Image" src="https://github.com/user-attachments/assets/a49bb5bd-837c-4db2-881a-3e3af307060d" />
 
 
-
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
