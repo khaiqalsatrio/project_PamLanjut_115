@@ -1,4 +1,4 @@
-Inap Go: Aplikasi Booking Penginapan
+## Inap Go: Aplikasi Booking Penginapan
 
 adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu traveler dengan anggaran terbatas dalam mencari dan memesan penginapan secara cepat, mudah, dan efisien.
 
