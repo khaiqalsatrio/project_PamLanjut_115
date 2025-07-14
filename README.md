@@ -4,8 +4,6 @@ adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu traveler d
 
 ## Role Customer
 
-
-
 <img width="369" height="817" alt="Image" src="https://github.com/user-attachments/assets/aceeacb2-04ab-44fc-b796-177cef7bf80c" />
 <img width="365" height="809" alt="Image" src="https://github.com/user-attachments/assets/ab0eedaf-0bea-4859-a735-c929756686ba" />
 
@@ -24,8 +22,6 @@ adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu traveler d
 
 ## Role Admin / Pemilik
 
-
-
 <img width="366" height="813" alt="Image" src="https://github.com/user-attachments/assets/afc90405-bb38-45e7-8f92-ee956908f23e" />
 <img width="369" height="819" alt="Image" src="https://github.com/user-attachments/assets/830645cb-3f7b-4d8a-afa1-b365858a566b" />
 
@@ -43,6 +39,18 @@ adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu traveler d
 
 
 <img width="375" height="804" alt="Image" src="https://github.com/user-attachments/assets/686bd3b0-4cd3-42c5-9886-dd2281e15ef8" />
+
+## Pendaftaran Hotel baru untuk admin yang barus daftar
+
+<img width="375" height="809" alt="Image" src="https://github.com/user-attachments/assets/0277bd82-6849-4a15-ae5e-99a32d3bcec9" />
+<img width="376" height="810" alt="Image" src="https://github.com/user-attachments/assets/880f0e8e-5c4f-4a00-a96a-367c0c36a8ce" />
+
+
+<img width="372" height="818" alt="Image" src="https://github.com/user-attachments/assets/398e78f7-0594-4f5f-8c80-45506cef9ae1" />
+<img width="380" height="821" alt="Image" src="https://github.com/user-attachments/assets/27fc7761-15ef-49bd-97ea-f4c920fce120" />
+
+
+<img width="382" height="819" alt="Image" src="https://github.com/user-attachments/assets/a49bb5bd-837c-4db2-881a-3e3af307060d" />
 
 
 
