@@ -2,7 +2,7 @@
 
 adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu traveler dengan anggaran terbatas dalam mencari dan memesan penginapan secara cepat, mudah, dan efisien.
 
-### Role Customer
+## Role Customer
 
 
 
@@ -22,7 +22,7 @@ adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu traveler d
 <img width="367" height="820" alt="Image" src="https://github.com/user-attachments/assets/c5cdd453-faed-487f-954d-6a4e38fe5f5c" />
 
 
-### Role Admin / Pemilik
+## Role Admin / Pemilik
 
 
 
