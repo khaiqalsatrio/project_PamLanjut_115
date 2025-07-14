@@ -2,7 +2,7 @@
 
 adalah aplikasi mobile berbasis Flutter yang dirancang untuk membantu traveler dengan anggaran terbatas dalam mencari dan memesan penginapan secara cepat, mudah, dan efisien.
 
-A new Flutter project.
+## Role Customer
 
 ## Getting Started
 
